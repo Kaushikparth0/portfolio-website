@@ -7,8 +7,8 @@ const projects = [
       "A web-based platform built with React and Express.js to allow residents to report and track community issues. Features role-based access for residents and administrators, enabling efficient issue categorization, status updates, and resolution tracking. Integrated database storage for secure record-keeping and real-time updates improving transparency and communication within the community.",
     image: "/projects/project1.png",
     tags: ["React", "Express.js", "Node.js", "Database"],
-    link: "#",
-    github: "#",
+    link: "https://resident-issue-reporting-system-parth-kaushiks-projects.vercel.app/",
+    github: "https://github.com/Kaushikparth0/Resident-Issue-Reporting-System.git",
   },
   {
     title: "Interior Design Web Page",
@@ -16,8 +16,8 @@ const projects = [
       "An interactive, responsive web interface for an interior design platform. Designed with modern UI/UX principles to maximize user satisfaction and visual appeal across all devices.",
     image: "/projects/project2.png",
     tags: ["HTML", "CSS", "JavaScript", "Responsive Design"],
-    link: "#",
-    github: "#",
+    link: "https://interior-design-five-tau.vercel.app/",
+    github: "https://github.com/Kaushikparth0/Interior-Design.git",
   },
   {
     title: "Cash Settlement Visualizer",
@@ -25,8 +25,8 @@ const projects = [
       "An interactive web app that simulates and optimizes multi-party cash settlements. Uses a heap-based algorithm to minimize transactions, with dynamic settlement visualization using Vue.js network graphs.",
     image: "/projects/project3.png",
     tags: ["JavaScript", "Vue.js", "Bootstrap", "Algorithms"],
-    link: "#",
-    github: "#",
+    link: "https://cash-settlement-visualizer.vercel.app/",
+    github: "https://github.com/Kaushikparth0/Cash-Settlement-Visualizer.git",
   },
 ];
 
@@ -125,10 +125,16 @@ export const Projects = () => {
 
         {/* View All CTA */}
         <div className="text-center mt-12 animate-fade-in animation-delay-500">
-          <AnimatedBorderButton>
-            View All Projects
-            <ArrowUpRight className="w-5 h-5" />
-          </AnimatedBorderButton>
+          <a
+            href="https://github.com/Kaushikparth0"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <AnimatedBorderButton>
+              View All Projects
+              <ArrowUpRight className="w-5 h-5" />
+            </AnimatedBorderButton>
+          </a>
         </div>
       </div>
     </section>

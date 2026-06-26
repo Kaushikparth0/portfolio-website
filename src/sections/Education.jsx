@@ -2,10 +2,10 @@ import { GraduationCap, Award, Star } from "lucide-react";
 
 const education = [
   {
-    period: "2022 — Present",
+    period: "2022 — 2026",
     degree: "Bachelor in Computer Science Engineering",
     institution: "Chandigarh University, Chandigarh",
-    detail: "CGPA: 6.88",
+    detail: "CGPA: 6.96",
     current: true,
     icon: GraduationCap,
   },

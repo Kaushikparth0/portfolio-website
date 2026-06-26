@@ -9,6 +9,10 @@ const navLinks = [
   { href: "#education", label: "Education" },
 ];
 
+const scrollToContact = () => {
+  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+};
+
 export const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -25,9 +29,8 @@ export const Navbar = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 transition-all duration-500 ${
-        isScrolled ? "glass-strong py-3" : "bg-transparent py-5"
-      }  z-50`}
+      className={`fixed top-0 left-0 right-0 transition-all duration-500 ${isScrolled ? "glass-strong py-3" : "bg-transparent py-5"
+        }  z-50`}
     >
       <nav className="container mx-auto px-6 flex items-center justify-between">
         <a
@@ -54,7 +57,7 @@ export const Navbar = () => {
 
         {/* CTA Button */}
         <div className="hidden md:block">
-          <Button size="sm">Contact Me</Button>
+          <Button size="sm" onClick={scrollToContact}>Contact Me</Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -81,7 +84,12 @@ export const Navbar = () => {
               </a>
             ))}
 
-            <Button onClick={() => setIsMobileMenuOpen(false)}>
+            <Button
+              onClick={() => {
+                setIsMobileMenuOpen(false);
+                scrollToContact();
+              }}
+            >
               Contact Me
             </Button>
           </div>

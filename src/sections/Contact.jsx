@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin, Send, Github, Linkedin } from "lucide-react";
+import { Mail, Phone, MapPin, Send, Github, Linkedin, CheckCircle, AlertCircle, Loader } from "lucide-react";
 import { Button } from "@/components/Button";
 import { useState } from "react";
 
@@ -6,20 +6,20 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "kaushikparth29@gmail.com",
-    href: "mailto:kaushikparth29@gmail.com",
+    value: "kaushikparth394@gmail.com",
+    href: "mailto:kaushikparth394@gmail.com",
   },
   {
     icon: Phone,
     label: "Phone",
-    value: "+91 8290271836",
-    href: "tel:+918290271836",
+    value: "+91 8171224380",
+    href: "tel:+918171224380",
   },
   {
     icon: MapPin,
     label: "Location",
     value: "Roorkee, India",
-    href: "#",
+    href: "https://maps.google.com/?q=Roorkee,India",
   },
 ];
 
@@ -42,14 +42,42 @@ export const Contact = () => {
     email: "",
     message: "",
   });
+  const [status, setStatus] = useState("idle"); // idle | loading | success | error
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(`Portfolio Contact from ${formData.name}`);
-    const body = encodeURIComponent(
-      `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
-    );
-    window.location.href = `mailto:kaushikparth29@gmail.com?subject=${subject}&body=${body}`;
+    setStatus("loading");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          access_key: "113b1885-970d-4700-ab4f-6fc82e2e6425",
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          subject: `Portfolio Contact from ${formData.name}`,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus("success");
+        setFormData({ name: "", email: "", message: "" });
+        setTimeout(() => setStatus("idle"), 5000);
+      } else {
+        throw new Error(result.message || "Submission failed");
+      }
+    } catch {
+      setStatus("error");
+      setTimeout(() => setStatus("idle"), 5000);
+    }
   };
 
   return (
@@ -80,6 +108,27 @@ export const Contact = () => {
         <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
           {/* Contact Form */}
           <div className="glass p-8 rounded-3xl border border-primary/30 animate-fade-in animation-delay-300">
+
+            {/* Success Banner */}
+            {status === "success" && (
+              <div className="mb-6 flex items-center gap-3 p-4 rounded-xl bg-green-500/10 border border-green-500/30 text-green-400 animate-fade-in">
+                <CheckCircle className="w-5 h-5 flex-shrink-0" />
+                <p className="text-sm font-medium">
+                  Message sent successfully! I'll get back to you soon. 🎉
+                </p>
+              </div>
+            )}
+
+            {/* Error Banner */}
+            {status === "error" && (
+              <div className="mb-6 flex items-center gap-3 p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 animate-fade-in">
+                <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                <p className="text-sm font-medium">
+                  Something went wrong. Please try emailing me directly.
+                </p>
+              </div>
+            )}
+
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -87,12 +136,14 @@ export const Contact = () => {
                 </label>
                 <input
                   id="name"
+                  name="name"
                   type="text"
                   required
                   placeholder="Your name..."
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                  onChange={handleChange}
+                  disabled={status === "loading"}
+                  className="w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -102,12 +153,14 @@ export const Contact = () => {
                 </label>
                 <input
                   id="email"
+                  name="email"
                   type="email"
                   required
                   placeholder="your@email.com"
                   value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all"
+                  onChange={handleChange}
+                  disabled={status === "loading"}
+                  className="w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
 
@@ -117,18 +170,39 @@ export const Contact = () => {
                 </label>
                 <textarea
                   id="message"
+                  name="message"
                   rows={5}
                   required
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={handleChange}
+                  disabled={status === "loading"}
                   placeholder="Your message..."
-                  className="w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none"
+                  className="w-full px-4 py-3 bg-surface rounded-xl border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all resize-none disabled:opacity-50 disabled:cursor-not-allowed"
                 />
               </div>
 
-              <Button className="w-full" type="submit" size="lg">
-                Send Message
-                <Send className="w-5 h-5" />
+              <Button
+                className="w-full"
+                type="submit"
+                size="lg"
+                disabled={status === "loading"}
+              >
+                {status === "loading" ? (
+                  <>
+                    <Loader className="w-5 h-5 animate-spin" />
+                    Sending...
+                  </>
+                ) : status === "success" ? (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    Sent!
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send className="w-5 h-5" />
+                  </>
+                )}
               </Button>
             </form>
           </div>
@@ -142,6 +216,8 @@ export const Contact = () => {
                   <a
                     key={i}
                     href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel="noopener noreferrer"
                     className="flex items-center gap-4 p-4 rounded-xl hover:bg-surface transition-colors group"
                   >
                     <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">

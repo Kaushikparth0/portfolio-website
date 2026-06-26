@@ -50,7 +50,7 @@ export const About = () => {
             <div className="space-y-4 text-muted-foreground animate-fade-in animation-delay-200">
               <p>
                 I'm <strong className="text-foreground">Parth Kaushik</strong>, a passionate software engineer
-                and Computer Science student at Chandigarh University (CGPA: 8.0). My journey
+                and Computer Science student at Chandigarh University. My journey
                 into tech began with a curiosity for how software shapes the world,
                 which evolved into a deep love for building web applications.
               </p>
